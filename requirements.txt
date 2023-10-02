@@ -20,7 +20,6 @@ openai-whisper==20230306
 regex==2023.8.8
 requests==2.31.0
 sympy==1.10.1
-tiktoken==0.2.0
 torch==2.0.1
 tqdm==4.66.1
 typing_extensions==4.8.0
