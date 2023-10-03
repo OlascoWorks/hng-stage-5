@@ -51,13 +51,18 @@ def save_video():
         }), 300
 
 
-# @done
 @app.route('/api/videos/<client_id>')
 def get_videos(client_id):
     if request.is_json():
-        video_files = os.listdir(f'/videos/{client_id}')
+        try:
+            video_files = os.listdir(f'/videos/{client_id}')
 
-        return video_files
+            return video_files
+        except:
+            return jsonify({
+                "status": "fail",
+                "message": f"could not get recordings. No user with id {client_id} found"
+            })
     else:
         return jsonify({
             "status": "fail",
@@ -65,7 +70,6 @@ def get_videos(client_id):
         })
 
 
-# @done
 @app.route('/api/start-recording')
 def start_recording():
     if request.is_json():
@@ -98,14 +102,13 @@ def start_recording():
         })
 
 
-# @done
 @app.route('/api/stop-recording')
 def stop_recording():
     if request.is_json():
         video_id = request.json["video-id"]
         try:
             with open(f'{video_id}-status.txt', 'w') as file:
-                file.write("STOPPED RECORDING")
+                file.write("PROCESSING...")
         except FileNotFoundError:
             return jsonify({
                 "status": "fail",
@@ -123,7 +126,6 @@ def stop_recording():
         })
 
 
-# @done
 @app.route('/api/upload-chunk')
 def upload():
     if request.is_json():
@@ -164,7 +166,6 @@ def upload():
         })
 
 
-# @done
 @app.route('/api/destroy-recording')
 def destroy_recording():
     if request.is_json():
@@ -190,7 +191,7 @@ def destroy_recording():
             "message": "please provide your request in a json format"
         })
 
-# @done
+
 @app.route('/api/video/status')
 def check_status():
     if request.is_json():
